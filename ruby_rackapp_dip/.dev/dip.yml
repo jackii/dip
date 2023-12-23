@@ -1,0 +1,28 @@
+version: "5.0"
+
+compose:
+  files:
+    - ./docker-compose.ruby.yml
+  project_name: ruby_rackapp_dip
+
+interaction:
+  bash:
+    description: Run an arbitrary script within a container or open a shell without deps
+    service: ruby
+    command: /bin/bash
+    compose_run_options: [ no-deps ]
+  ruby: &ruby
+    description: Run ruby command
+    service: ruby
+    command: ruby
+  bundle:
+    description: Run Bundler commands
+    service: ruby
+    command: bundle
+    compose_run_options: [ no-deps ]
+  rackup:
+    description: Run rackup commands
+    service: ruby
+    command: bundle exec rackup --host 0.0.0.0
+    compose:
+      run_options: [service-ports]

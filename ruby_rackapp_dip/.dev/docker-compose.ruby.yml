@@ -1,0 +1,31 @@
+version: "3.0"
+
+services:
+  # Current stable Ruby
+  ruby: &ruby
+    image: rubocophq/ruby-snapshot:latest
+    #image: ruby:2.7
+    volumes:
+      # That's all the magic!
+      - ${PWD}:/${PWD}:cached
+      - bundler_data:/usr/local/bundle
+    environment:
+      HISTFILE: /usr/local/hist/.bash_history
+      LANG: C.UTF-8
+      PROMPT_DIRTRIM: 2
+      PS1: '[\W]\! '
+      # Plays nice with gemfiles/*.gemfile files for CI
+      BUNDLE_GEMFILE: ${BUNDLE_GEMFILE:-Gemfile}
+    # And that's the second part of the spell
+    working_dir: ${PWD}
+    # Specify frequenlty used ports to expose (9292 — Puma, 3000 — Rails).
+    # Use `dip ruby server` to run a container with ports exposed.
+    # Note that we "prefix" the ports with "1", so, 9292 will be available at 19292 on the host machine.
+    ports:
+      - 19292:9292
+      - 13000:3000
+      - 18080:8080
+    tmpfs:
+      - /tmp
+volumes:
+  bundler_data:
