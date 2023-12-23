@@ -1,0 +1,16 @@
+version: "5.0"
+
+compose:
+  files:
+    - ./docker-compose.ruby.yml
+  project_name: ruby_dip
+
+interaction:
+  bash: &bash
+    description: Open service terminal
+    service: ruby
+    command: /bin/bash
+  ruby: &ruby
+    description: Run ruby command
+    service: ruby
+    command: ruby
