@@ -1,0 +1,39 @@
+version: "5.0"
+
+compose:
+  files:
+    - ./docker-compose.rails.yml
+  project_name: ruby_on_rails_dip
+
+interaction:
+  # Run a Rails container without any dependent services
+  bash:
+    description: Run an arbitrary script within a container (or open a shell without deps)
+    service: rails
+    command: /bin/bash
+    compose_run_options: [ no-deps ]
+  ruby: &ruby
+    description: Run Ruby command
+    service: rails
+    command: ruby
+  bundle:
+    description: Run Bundler commands
+    service: rails
+    command: bundle
+    compose_run_options: [ no-deps ]
+  gem:
+    description: Run Rubygems commands
+    service: rails
+    command: gem
+    compose_run_options: [ no-deps ]
+  rails:
+    description: Run Rails commands
+    service: rails
+    command: rails
+    subcommands:
+      s:
+        description: Run Rails server at http://0.0.0.0:3000
+        service: rails
+        command: bundle exec rails server -b 0.0.0.0 -p 3000
+        compose:
+          run_options: [service-ports]
