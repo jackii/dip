@@ -1,0 +1,31 @@
+version: '8.0'
+
+compose:
+  files:
+    - ./docker-compose.yml
+  project_name: nextjs
+
+interaction:
+  # This command spins up a container without and opens a terminal within it.
+  runner:
+    description: Open a Bash shell within the container
+    service: app
+    command: /bin/bash
+    compose_run_options: [ no-deps ]
+  node:
+    description: Run the node command
+    service: app
+    command: node
+  npm:
+    description: Run the npm command
+    service: app
+    command: npm
+  yarn:
+    description: Run the yarn command
+    service: app
+    command: yarn
+  next:
+    description: Run the next command
+    service: app
+    command: next
+

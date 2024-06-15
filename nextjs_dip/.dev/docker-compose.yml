@@ -1,0 +1,28 @@
+x-app: &app
+  build:
+    context: ../
+    dockerfile: .dev/Dockerfile
+    args:
+      NODE_MAJOR: '18'
+  environment: &env
+    NODE_ENV: ${NODE_ENV:-development}
+  tmpfs:
+    - /tmp
+ 
+services:
+  app:
+    <<: *app
+    command: yarn dev
+    environment:
+      PORT: 4000
+    ports:
+      - '4000:4000'
+    volumes:
+      - ..:/app:cached
+      - node_modules:/app/node_modules
+      - history:/usr/local/hist
+      - ./.bashrc:/root/.bashrc:ro
+
+volumes:
+  history:
+  node_modules:
